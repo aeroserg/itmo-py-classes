@@ -4,7 +4,6 @@
 
 ___Всем привет___: 📅 12/09/2025, 🕔 ~18:45
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
 
 ## Commands
 
