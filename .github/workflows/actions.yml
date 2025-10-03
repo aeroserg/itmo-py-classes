@@ -2,7 +2,7 @@ name: Сборка и публикация MkDocs сайта
 
 on:
   push:
-    branches: [ main ]
+    # branches: [ main ]
 
 jobs:
   build-and-deploy:
