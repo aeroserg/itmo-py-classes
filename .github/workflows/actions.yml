@@ -1,41 +1,42 @@
-name: Build and Deploy MkDocs Site
+name: Сборка и публикация MkDocs сайта
 
 on:
   push:
-    # branches: [ main ]
+    branches: [ main ]
 
 jobs:
   build-and-deploy:
-    name: Build and Deploy
+    name: Сборка и публикация
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Получить код из репозитория
+        uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Установить Python
         uses: actions/setup-python@v4
         with:
           python-version: 3.12
 
-      - name: Install dependencies
+      - name: Установить MkDocs
         run: pip install mkdocs
 
-      - name: Build site
-        run: mkdocs build
-
-      - name: Setup Node.js
+      - name: Установить Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
 
-      - name: Install and build CSS
+      - name: Установить и собрать CSS
         run: |
           npm ci
           npm run build-css
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Собрать сайт
+        run: mkdocs build
+
+      - name: Опубликовать на GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./site
+          force_orphan: true 
