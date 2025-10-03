@@ -1,36 +1,41 @@
-name: Build and Deploy of Static Site
+name: Build and Deploy MkDocs Site
 
 on:
   push:
-  
+    # branches: [ main ]
+
 jobs:
-  build:
+  build-and-deploy:
     name: Build and Deploy
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Python Setup
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: 3.12
 
-      - name: MkDocs Setup
+      - name: Install dependencies
         run: pip install mkdocs
 
-      - name: Build
+      - name: Build site
         run: mkdocs build
 
-      - name: Install SSH key
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install and build CSS
         run: |
-          install -m 600 -D /dev/null ~/.ssh/id_rsa
-          echo "${{ secrets.PRIVATE_SSH_KEY }}" > ~/.ssh/id_rsa
-          echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          npm ci
+          npm run build-css
 
-      - name: Deploy
-        run: mkdocs gh-deploy --force
-        # run: rsync --archive --stats site/ ${{ secrets.REMOTE_DEST }}
-        # root@__IP_ADDR__:/var/www/html
-
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
