@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build-css": "postcss src/styles.css -o site/css/styles.css"
+    "build-css": "postcss docs/css/styles.css -o site/css/styles.css"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",
