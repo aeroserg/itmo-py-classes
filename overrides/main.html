@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page.title %}{{ page.title }} - {% endif %}{{ config.site_name }}</title>
+    <meta name="description" content="My custom documentation site">
+    <meta name="author" content="Your Name">
+    
+    <link rel="stylesheet" href="{{ 'css/styles.css' | url }}">
+</head>
+<body>
+    {% include "partials/header.html" %}
+
+    <main>
+        {{ page.content }}
+    </main>
+
+    {% include "partials/footer.html" %}
+
+</body>
+</html>

@@ -1,36 +1,42 @@
-name: Build and Deploy of Static Site
+name: Сборка и публикация MkDocs сайта
 
 on:
   push:
-  
+    # branches: [ main ]
+
 jobs:
-  build:
-    name: Build and Deploy
+  build-and-deploy:
+    name: Сборка и публикация
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Получить код из репозитория
+        uses: actions/checkout@v4
 
-      - name: Python Setup
+      - name: Установить Python
         uses: actions/setup-python@v4
         with:
           python-version: 3.12
 
-      - name: MkDocs Setup
+      - name: Установить MkDocs
         run: pip install mkdocs
 
-      - name: Build
+      - name: Установить Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Установить и собрать CSS
+        run: |
+          npm ci
+          npm run build-css
+
+      - name: Собрать сайт
         run: mkdocs build
 
-      - name: Install SSH key
-        run: |
-          install -m 600 -D /dev/null ~/.ssh/id_rsa
-          echo "${{ secrets.PRIVATE_SSH_KEY }}" > ~/.ssh/id_rsa
-          echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
-
-      - name: Deploy
-        run: mkdocs gh-deploy --force
-        # run: rsync --archive --stats site/ ${{ secrets.REMOTE_DEST }}
-        # root@__IP_ADDR__:/var/www/html
-
+      - name: Опубликовать на GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+          force_orphan: true 

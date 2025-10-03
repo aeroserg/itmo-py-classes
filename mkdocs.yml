@@ -1,1 +1,7 @@
 site_name: My Docs
+theme:
+  name: mkdocs
+  custom_dir: overrides
+
+nav:
+  - Home: index.md
