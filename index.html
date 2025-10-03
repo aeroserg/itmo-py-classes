@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - My Docs</title>
+    <meta name="description" content="My custom documentation site">
+    <meta name="author" content="Your Name">
+    
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+    <nav>
+        <div class="site-title">
+            <a href="">Статичный сайт</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/itmo-py-classes">Домашняя</a></li>
+            <li><a href="/itmo-py-classes/cv.pdf">Обо мне</a></li>
+        </ul>
+    </nav>
+</header>
+
+    <main>
+        <h1 id="_1">Добро пожаловать!</h1>
+<p><strong><em>Всем привет</em></strong>: 📅 03/10/2025, 🕔 ~18:45</p>
+<h2 id="commands">Commands</h2>
+<ul>
+<li><code>mkdocs new [dir-name]</code> - Create a new project.</li>
+<li><code>mkdocs serve</code> - Start the live-reloading docs server.</li>
+<li><code>mkdocs build</code> - Build the documentation site.</li>
+<li><code>mkdocs -h</code> - Print help message and exit.</li>
+</ul>
+<h2 id="_2">Этапы сборки</h2>
+<pre><code>name: Сборка и публикация MkDocs сайта
+
+    on:
+    push:
+        # branches: [ main ]
+
+    jobs:
+    build-and-deploy:
+        name: Сборка и публикация
+        runs-on: ubuntu-latest
+
+        steps:
+        - name: Получить код из репозитория
+            uses: actions/checkout@v4
+
+        - name: Установить Python
+            uses: actions/setup-python@v4
+            with:
+            python-version: 3.12
+
+        - name: Установить MkDocs
+            run: pip install mkdocs
+
+        - name: Установить Node.js
+            uses: actions/setup-node@v4
+            with:
+            node-version: '18'
+
+        - name: Установить и собрать CSS
+            run: |
+            npm ci
+            npm run build-css
+
+        - name: Собрать сайт
+            run: mkdocs build
+
+        - name: Опубликовать на GitHub Pages
+            uses: peaceiris/actions-gh-pages@v4
+            with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            publish_dir: ./site
+            force_orphan: true
+</code></pre>
+    </main>
+
+    <footer>
+    <div class="footer-content">
+        <p>&copy; 2025 Статичный сайт.</p>
+        <p>Автор: Annenkov Sergey | <a href="mailto:1308267@gmail.com">Контакты</a></p>
+        <div class="footer-links">
+            <a href="/privacy/">Privacy Policy</a> | 
+            <a href="/terms/">Terms of Service</a>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
